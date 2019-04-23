@@ -1,47 +1,51 @@
+import json
 import time
-from slackclient import SlackClient
-import os
+
+from issue_chan.issue import IssueManager
+from issue_chan.slack import SlackManager
+from issue_chan.utils import get_logger
 
 
-def get_permalink(client: SlackClient, channel: str, ts: str):
-    res = client.api_call(
-        'chat.getPermalink',
-        channel=channel,
-        message_ts=ts
-    )
-    print(res)
-    return res['permalink']
+def check_reaction(event):
+    """issueスタンプがついていたらissueを立て、slackにURLを通知する"""
+    event = slack.check_reaction(event, 'issue')
+    if event is not None:
+        channel, ts = event['item']['channel'], event['item']['ts']
+        content = slack.get_content(channel, ts)
+        link = slack.get_permalink(channel, ts)
+
+        issue_body = f"{content}\nlink: {link}"
+        iss, created = issue.create('amane-suzuki/sandbox', content, issue_body)
+
+        if created:
+            slack_message = f"issueを作成しました！\n{iss.html_url}"
+        else:
+            slack_message = f"同じissueが既にありますよ！\n{iss.html_url}"
+        slack.send_message(channel, slack_message)
 
 
-def get_content(client: SlackClient, channel: str, ts: str):
-    res = client.api_call(
-        'channels.history',
-        channel=channel,
-        oldest=ts,
-        latest=ts,
-        inclusive=True
-    )
-    print(res)
-    return res['messages'][0]['text']
+def check_reply(event):
+    """replyで設定項目が飛んできたら設定し、そうでなければusageを提示"""
+    pass
 
 
-def check_reaction(events, stamp):
-    for event in events:
-        if 'type' in event and event['type'] == 'reaction_added' and event['reaction'] == stamp:
-            print(event)
-            return event
-    return None
-
-
-sc = SlackClient(os.environ['SLACK_API_TOKEN'])
-if sc.rtm_connect():
-    while True:
-        events = sc.rtm_read()
-        event = check_reaction(events, 'kaggle_grandmaster')
-        if event is not None:
-            item = event['item']
-            message = get_content(sc, item['channel'], item['ts'])
-            link = get_permalink(sc, item['channel'], item['ts'])
-            sc.rtm_send_message(event['item']['channel'],
-                                f'スタンプが押されたよ！\ntext: {message}\nlink: {link}')
+def main():
+    slack.client.rtm_connect()
+    logger.info('connect RTM api')
+    while slack.client.server.connected:
+        events = slack.client.rtm_read()
+        for event in events:
+            check_reply(event)
+            check_reaction(event)
         time.sleep(1)
+
+
+if __name__ == '__main__':
+    logger = get_logger('issue_chan')
+    with open('config.json') as f:
+        config = json.load(f)
+        logger.info('load config.json')
+
+    slack = SlackManager(config['slack_api_token'])
+    issue = IssueManager(config['github_hostname'], config['github_app_id'], config['github_installation_id'])
+    main()

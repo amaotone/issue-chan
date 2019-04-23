@@ -7,6 +7,11 @@ verify_ssl = true
 
 [packages]
 slackclient = "*"
+pyjwt = "*"
+requests = "*"
+cryptography = "*"
+pygithub = "*"
+sqlalchemy = "*"
 
 [requires]
 python_version = "3.7"

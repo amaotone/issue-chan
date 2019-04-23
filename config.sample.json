@@ -1,0 +1,6 @@
+{
+  "slack_api_token": "YOUR_SLACK_API_TOKEN",
+  "github_app_id": "YOUR_APP_ID",
+  "github_installation_id": "YOUR_INSTALLATION_ID",
+  "github_hostname": "github.com"
+}

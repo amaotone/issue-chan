@@ -1,8 +1,11 @@
 # issue-chan
 
 <img src="https://avatars.slack-edge.com/2019-04-19/613268541333_b3d98b8479b877664c89_512.jpg" width=100>
+←issueを作るという強い意志を感じる
 
-GitHub上で特定のemojiでreactionしたら、そのメッセージをissueにするbot
+GitHub上で特定のemojiでreactionしたら、そのメッセージをissueとして立てる
+
+要件：
 
 - realtime messaging apiからreactionを取得
 - reactionされたitemのchannelとtsを取得
@@ -11,16 +14,35 @@ GitHub上で特定のemojiでreactionしたら、そのメッセージをissue�
 
 ## 使い方
 
+### config.jsonを作る
+
+config.sample.jsonをコピーして作ると良いです。
+
+```json
+{
+  "slack_api_token": "YOUR_SLACK_API_TOKEN",
+  "github_app_id": "YOUR_APP_ID",
+  "github_installation_id": "YOUR_INSTALLATION_ID",
+  "github_hostname": "github.com"
+}
+```
+
+
 ### デプロイ
 
-### コマンド
+このフォルダを丸ごとコピーして以下をタイプ。python3.7以降とpipenvが必要です。
 
-## 依存ライブラリ
+`$ pipenv run python main.py`
 
-- slackbot 0.5.4+
+### GitHubで行う設定
 
-## アイコンについて
+Repositoryにissue-chanを設定します。
 
-- https://enjoynet.co.jp/free_snsicon/menherachan_3/
+### Slackで行う設定
 
-を利用しています
+使いたいチャンネルにissue-chanをinviteします。
+
+## アイコン
+
+https://enjoynet.co.jp/free_snsicon/menherachan_3/
+にて配布されている素材を使っています。
