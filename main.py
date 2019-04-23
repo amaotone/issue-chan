@@ -42,7 +42,7 @@ def main():
 
 if __name__ == '__main__':
     logger = get_logger('issue_chan')
-    with open('config.json') as f:
+    with open('config/config.json') as f:
         config = json.load(f)
         logger.info('load config.json')
 

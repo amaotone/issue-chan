@@ -1,7 +1,8 @@
 # issue-chan
 
 <img src="https://avatars.slack-edge.com/2019-04-19/613268541333_b3d98b8479b877664c89_512.jpg" width=100>
-←issueを作るという強い意志を感じる
+
+↑issueを作るという強い意志を感じる
 
 GitHub上で特定のemojiでreactionしたら、そのメッセージをissueとして立てる
 
@@ -14,7 +15,7 @@ GitHub上で特定のemojiでreactionしたら、そのメッセージをissue�
 
 ## 使い方
 
-### config.jsonを作る
+### config/config.jsonを作る
 
 config.sample.jsonをコピーして作ると良いです。
 

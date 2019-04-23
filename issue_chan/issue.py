@@ -36,6 +36,7 @@ class IssueManager(object):
         return issue, True
 
     def search_issue_by_title(self, repo_name, title) -> Optional[Issue]:
+        """指定された名前のopen issueを探す"""
         repo = self.client.get_repo(repo_name)
         issues = repo.get_issues(state='open')
         for issue in issues:
