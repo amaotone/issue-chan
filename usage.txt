@@ -1,0 +1,10 @@
+*GitHubの設定*
+- リポジトリにissue-chanをインストールします
+- {app_public_url}
+
+*Slackの設定*
+- issue-chanをチャンネルにinviteします
+- `issue-chan set hoge/fuga` でチャンネルとリポジトリを紐づけます
+
+*つかいかた*
+- `:issue:` :issue: スタンプを付けると、紐付いているリポジトリにissueが立ちます

@@ -39,7 +39,7 @@ def check_command(event):
     """設定項目が発言されたら設定し、そうでなければ使い方を提示"""
 
     prefixes = ('issue-chan', 'issue_chan')
-    if 'type' in event and event['type'] == 'message':
+    if 'type' in event and 'text' in event and event['type'] == 'message':
         texts = event['text'].split()
         if texts[0] not in prefixes:
             return
@@ -50,7 +50,7 @@ def check_command(event):
             repo = texts[2]
             mapping[channel] = repo
             update_mapping(MAPPING_PATH, mapping)
-            message = f"このチャンネルと `repo` を紐付けました！"
+            message = f"このチャンネルと `{repo}` を紐付けました！"
             slack.send_message(channel, message)
             logger.info('link channel=%s -> repository=%s', channel, repo)
         else:
@@ -58,9 +58,7 @@ def check_command(event):
 
 
 def send_usage(channel):
-    message = f"つかいかた\n" \
-        f"> 1. `issue-chan set hoge/fuga` でリポジトリをこのチャンネルと紐付けます\n" \
-        f"> 2. issue化したいメッセージに `:issue:` :issue: スタンプをつければ、紐付いているリポジトリにissueを立てます"
+    message = open("usage.txt").read().format(app_public_url=config['app_public_url'])
     slack.send_message(channel, message)
 
 
@@ -83,6 +81,6 @@ if __name__ == '__main__':
         logger.info('load config.json')
 
     slack = SlackManager(config['slack_api_token'])
-    issue = IssueManager(config['github_hostname'], config['github_app_id'], config['github_installation_id'])
+    issue = IssueManager(config['github_hostname'], config['app_id'], config['app_installation_id'])
     mapping = load_mapping(MAPPING_PATH)
     main()
