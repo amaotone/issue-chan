@@ -12,6 +12,10 @@ requests = "*"
 cryptography = "*"
 pygithub = "*"
 sqlalchemy = "*"
+slackeventsapi = "*"
 
 [requires]
 python_version = "3.7"
+
+[pipenv]
+allow_prereleases = true
